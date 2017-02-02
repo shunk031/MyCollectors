@@ -38,7 +38,20 @@ if __name__ == '__main__':
     parser.add_argument("--crawler", "-c", choices=crawlers.keys())
     args = parser.parse_args()
 
-    status_file = crawlers[args.crawler].__class__.__name__ + "-status.json"
+    if args.crawler == "engadget":
+        scraper_name = "EngadgetScraper"
+
+    elif args.crawler == "researchblogging":
+        scraper_name = "ResearchBloggingScraper"
+
+    elif args.crawler == "techcrunch":
+        scraper_name = "TechcrunchScraper"
+
+    elif args.crawler == "wired":
+        scraper_name = "WiredScraper"
+
+    status_file = scraper_name + "-status.json"
+
     if os.path.isfile(status_file):
         with open(status_file, "r") as rf:
             status_dict = json.load(rf)
