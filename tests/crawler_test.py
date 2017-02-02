@@ -58,6 +58,7 @@ if __name__ == '__main__':
     slacker = Slacker(slacker_config["token"])
 
     start_id = random.randint(0, 1000)
+    slacker.chat.post_message("#crawler", "{}: {} start.".format(crawler.__class__.__name__, start_id))
     finish_crawl = crawler.crawl()
 
     max_retries = 3
