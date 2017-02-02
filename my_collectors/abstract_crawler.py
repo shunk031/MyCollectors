@@ -69,7 +69,9 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
         status_dict["target_url"] = self.target_url
         status_dict["page_count"] = self.page_count
 
-        with open("status.json", "w") as wf:
+        status_filename = self.scraper.__class__.__name__ + "-status.json"
+
+        with open(status_filename, "w") as wf:
             json.dump(status_dict, wf, indent=2)
 
         print("[ SAVE ] Save status.json")
