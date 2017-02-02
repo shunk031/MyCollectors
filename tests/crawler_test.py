@@ -74,3 +74,5 @@ if __name__ == '__main__':
             wait = 2 ** (retries - 1)
             print("[ RETRY ] Waiting {} seconds...".format(wait))
             time.sleep(wait)
+        else:
+            break
