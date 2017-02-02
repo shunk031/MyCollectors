@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from abstract_crawler import AbstractCrawler
-from techcrunch_collector.scraper import TechcrunchScraper
+from my_collectors.abstract_crawler import AbstractCrawler
+from my_collectors.techcrunch_collector.scraper import TechcrunchScraper
 
 from urllib.parse import urljoin
 

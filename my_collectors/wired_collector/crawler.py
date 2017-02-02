@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from abstract_crawler import AbstractCrawler
-from wired_collector.scraper import WiredScraper
+from my_collectors.abstract_crawler import AbstractCrawler
+from my_collectors.wired_collector.scraper import WiredScraper
 
 
 class WiredCrawler(AbstractCrawler):

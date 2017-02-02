@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from abstract_crawler import AbstractCrawler
-from engadget_collector.scraper import EngadgetScraper
+from my_collectors.abstract_crawler import AbstractCrawler
+from my_collectors.engadget_collector.scraper import EngadgetScraper
 from urllib.parse import urljoin
 
 
 class EngadgetCrawler(AbstractCrawler):
 
     def __init__(self, target_url, save_dir="./data", page_count=1):
-        super(EngadgetCrawler.self).__init__(
+        super(EngadgetCrawler, self).__init__(
             EngadgetScraper, target_url, save_dir, page_count
         )
 

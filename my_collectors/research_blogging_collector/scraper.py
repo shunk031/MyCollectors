@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from abstract_scraper import AbstractScraper
+from my_collectors.abstract_scraper import AbstractScraper
 from urllib.request import urlopen, Request
 from urllib.parse import urljoin
 from http.client import IncompleteRead

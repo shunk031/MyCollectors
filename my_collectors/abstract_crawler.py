@@ -4,7 +4,7 @@ import time
 import json
 
 from abc import ABCMeta, abstractmethod
-from base_collector import BaseCollector
+from my_collectors.base_collector import BaseCollector
 
 
 class AbstractCrawler(BaseCollector, metaclass=ABCMeta):

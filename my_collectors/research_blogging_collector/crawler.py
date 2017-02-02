@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from abstract_crawler import AbstractCrawler
-from research_blogging_collector.scraper import ResearchBloggingScraper
+from my_collectors.abstract_crawler import AbstractCrawler
+from my_collectors.research_blogging_collector.scraper import ResearchBloggingScraper
 
 
 class ResearchBloggingCrawler(AbstractCrawler):
