@@ -8,10 +8,10 @@ import random
 import time
 sys.path.append(os.pardir)
 
-from engadget_collector.crawler import EngadgetCrawler
-from research_blogging_collector.crawler import ResearchBloggingCrawler
-from techcrunch_collector.crawler import TechcrunchCrawler
-from wired_collector.crawler import WiredCrawler
+from my_collectors.engadget_collector.crawler import EngadgetCrawler
+from my_collectors.research_blogging_collector.crawler import ResearchBloggingCrawler
+from my_collectors.techcrunch_collector.crawler import TechcrunchCrawler
+from my_collectors.wired_collector.crawler import WiredCrawler
 
 from slacker import Slacker
 from urllib.error import HTTPError
@@ -35,7 +35,7 @@ target_urls = {
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Test crawler work")
-    parser.add_argument("--crawler", "-c", choice=crawlers.keys())
+    parser.add_argument("--crawler", "-c", choices=crawlers.keys())
     args = parser.parse_args()
 
     status_file = args.crawler + "-status.json"
