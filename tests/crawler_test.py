@@ -49,7 +49,7 @@ if __name__ == '__main__':
         target_url = target_urls[args.crawler]
         page_count = 1
 
-    crawler = crawlers[args.crawler](target_url, "./dump_files", page_count=page_count)
+    crawler = crawlers[args.crawler](target_url, page_count=page_count)
 
     slacker_config_path = os.path.join(HOME_DIR, ".slacker.config")
     with open(slacker_config_path, "r") as rf:

@@ -6,7 +6,7 @@ from my_collectors.research_blogging_collector.scraper import ResearchBloggingSc
 
 class ResearchBloggingCrawler(AbstractCrawler):
 
-    def __init__(self, target_url, save_dir="./data", page_count=1):
+    def __init__(self, target_url, save_dir="./research_blogging_data", page_count=1):
         super(ResearchBloggingCrawler, self).__init__(
             ResearchBloggingScraper, target_url, save_dir, page_count
         )

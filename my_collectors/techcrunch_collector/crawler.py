@@ -10,7 +10,7 @@ class TechcrunchCrawler(AbstractCrawler):
 
     base_url = "https://techcrunch.com/"
 
-    def __init__(self, target_url, save_dir="./data", page_count=1):
+    def __init__(self, target_url, save_dir="./techcrunch_data", page_count=1):
         super(TechcrunchCrawler, self).__init__(
             TechcrunchScraper, target_url, save_dir, page_count
         )

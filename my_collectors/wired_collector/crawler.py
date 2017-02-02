@@ -6,7 +6,7 @@ from my_collectors.wired_collector.scraper import WiredScraper
 
 class WiredCrawler(AbstractCrawler):
 
-    def __init__(self, target_url, save_dir="./data", page_count=1):
+    def __init__(self, target_url, save_dir="./wired_data", page_count=1):
         super(WiredCrawler, self).__init__(
             WiredScraper, target_url, save_dir, page_count
         )

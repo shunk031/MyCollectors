@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 
 class EngadgetCrawler(AbstractCrawler):
 
-    def __init__(self, target_url, save_dir="./data", page_count=1):
+    def __init__(self, target_url, save_dir="./engadget_data", page_count=1):
         super(EngadgetCrawler, self).__init__(
             EngadgetScraper, target_url, save_dir, page_count
         )
