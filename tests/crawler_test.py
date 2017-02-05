@@ -35,7 +35,7 @@ target_urls = {
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Test crawler work")
-    parser.add_argument("--crawler", "-c", choices=crawlers.keys())
+    parser.add_argument("crawler", choices=crawlers.keys())
     args = parser.parse_args()
 
     if args.crawler == "engadget":
