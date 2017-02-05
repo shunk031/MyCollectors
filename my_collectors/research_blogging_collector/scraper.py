@@ -4,6 +4,7 @@ from my_collectors.abstract_scraper import AbstractScraper
 from urllib.request import urlopen, Request
 from urllib.parse import urljoin
 from urllib.error import HTTPError
+from urllib.error import URLError
 from http.client import IncompleteRead
 from bs4 import BeautifulSoup
 from readability.readability import Document
@@ -72,7 +73,7 @@ class ResearchBloggingScraper(AbstractScraper):
                 with urlopen(request) as res:
                     html = res.read()
 
-            except (HTTPError, IncompleteRead) as err:
+            except (HTTPError, IncompleteRead, URLError) as err:
                 retries += 1
                 if retries >= max_retries:
                     raise err

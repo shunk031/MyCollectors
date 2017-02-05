@@ -46,7 +46,7 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
                 # print processing time
                 self._print_processing_time(start, end)
 
-        except KeyboardInterrupt as err:
+        except (Exception, KeyboardInterrupt) as err:
             print("[ EXCEPTION ] Exception occured: {}".format(err))
 
             # save crawler status
