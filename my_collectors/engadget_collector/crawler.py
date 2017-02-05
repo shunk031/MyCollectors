@@ -25,7 +25,7 @@ class EngadgetCrawler(AbstractCrawler):
             next_page_url = urljoin(self.base_url, abs_next_page_url)
 
             if self.before_url != next_page_url:
-                print("[ PROCESS ] Next article list page: {}".format(url))
+                print("[ PROCESS ] Next article list page: {}".format(next_page_url))
                 return next_page_url
 
         return None

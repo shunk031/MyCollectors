@@ -6,8 +6,6 @@ import traceback
 
 class WiredScraper(AbstractScraper):
 
-    none_count = 0
-
     def __init__(self, target_url, save_dir):
         super(WiredScraper, self).__init__(
             target_url, save_dir
@@ -39,24 +37,23 @@ class WiredScraper(AbstractScraper):
 
         detail_soup = self._make_soup(article_url)
         h1_post_title = detail_soup.find("h1", {"class": "post-title"})
-        try:
-            title = h1_post_title.get_text().strip()
-
-        except AttributeError as err:
-            traceback.print_tb(err.__traceback__)
-
-            title = str(self.none_count)
-            self.none_count += 1
+        title = h1_post_title.get_text().strip()
 
         print("[ GET ] Title: {}".format(title))
         article_dict["title"] = title
 
-        try:
-            article_content = detail_soup.find("article", {"class": "content"})
-            article_content = article_content.get_text()
-        except AttributeError as err:
-            traceback.print_tb(err.__traceback__)
-            article_content = None
+        article_content = detail_soup.find("article", {"class": "content"})
+        article_content = article_content.get_text()
 
-        article_dict["article"] = article_content
+        article_dict["article"] = article_content.strip()
+
+        ul_article_tag = detail_soup.find("ul", {"id": "article-tags"})
+        article_tags = ul_article_tag.find_all("a")
+        article_tag_list = []
+        for article_tag in article_tags:
+            # print(article_tag.get_text())
+            article_tag_list.append(article_tag.get_text())
+
+        article_dict["topics"] = article_tag_list
+
         return article_dict

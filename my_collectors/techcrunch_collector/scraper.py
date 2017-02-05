@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from my_collectors.abstract_scraper import AbstractScraper
+import re
 import traceback
 
 
@@ -57,17 +58,19 @@ class TechcrunchScraper(AbstractScraper):
         print("[ GET ] Title: {}".format(title))
 
         article_dict["title"] = title
-
-        try:
-            div_article_entry = detail_soup.find("div", {"class": "article-entry"})
-            p_article_texts = div_article_entry.find_all("p")
-            article_content = [p_article_text.get_text() for p_article_text in p_article_texts]
-            article_content = " ".join(article_content)
-
-        except AttributeError as err:
-            traceback.print_tb(err.__traceback__)
-            article_content = None
+        div_article_entry = detail_soup.find("div", {"class": "article-entry"})
+        p_article_texts = div_article_entry.find_all("p")
+        article_content = [p_article_text.get_text() for p_article_text in p_article_texts]
+        article_content = " ".join(article_content)
 
         article_dict["article"] = article_content
+
+        li_accordions = detail_soup.find("div", {"class": "accordion"}).find_all("li", {"id": re.compile("tc-accordion-item-.*")})
+        article_tag_list = []
+        for li_accordion in li_accordions:
+            # print(li_accordion.get_text().strip())
+            article_tag_list.append(li_accordion.get_text().strip())
+
+        article_dict["topics"] = article_tag_list
 
         return article_dict

@@ -38,8 +38,7 @@ class EngadgetScraper(AbstractScraper):
                 print("[ GET ] Get URL: {}".format(url))
                 article_detail_url_list.append(url)
             except TypeError as err:
-                traceback.print_tb(err.__traceback__)
-                pass
+                print("[ EXCEPTION ] Exception occured: {}".format(err))
 
         return article_detail_url_list
 
@@ -50,24 +49,22 @@ class EngadgetScraper(AbstractScraper):
 
         detail_soup = self._make_soup(article_url)
         title_tag = detail_soup.find("h1", {"class": "t-h4@m-"})
-        try:
-            title = title_tag.get_text().strip()
-        except AttributeError as err:
-            traceback.print_tb(err.__traceback__)
-            title = str(self.none_count)
-            self.none_count += 1
-
+        title = title_tag.get_text().strip()
         print("[ GET ] Title: {}".format(title))
         article_dict["title"] = title
 
-        try:
-            div_article_texts = detail_soup.find_all("div", {"class": "artcile-text"})
-            article_content = [div_article_text.get_text().strip() for div_article_text in div_article_texts]
-            article_content = " ".join(article_content)
-        except AttributeError as err:
-            traceback.print_tb(err.__traceback__)
-            article_content = None
-
+        div_article_texts = detail_soup.find_all("div", {"class": "article-text"})
+        article_content = [div_article_text.get_text().strip() for div_article_text in div_article_texts]
+        article_content = " ".join(article_content)
         article_dict["article"] = article_content
+
+        section_t_meta = detail_soup.find("section", {"class": "t-meta"})
+        a_th_metas = section_t_meta.find_all("a")
+        article_topics = []
+        for topics in a_th_metas:
+            # print(topics.get_text())
+            article_topics.append(topics.get_text())
+
+        article_dict["topics"] = article_topics
 
         return article_dict

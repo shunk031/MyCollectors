@@ -18,7 +18,7 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
         self.save_dir = save_dir
         self.page_count = page_count
 
-        self.scraper = scraper_class(self.target_url, self.save_dir)
+        self.scraper_class = scraper_class
 
     @abstractmethod
     def get_next_page_link(self, url):
@@ -30,7 +30,8 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
                 # start to measure the time
                 start = time.time()
                 print("[ PROCESS ] Now page {} PROCESSING".format(self.page_count))
-                self.scraper.scrap()  # scraping!
+                scraper = self.scraper_class(self.target_url, self.save_dir)
+                scraper.scrap()  # scraping!
                 # get next page link url
                 self.target_url = self.get_next_page_link(self.target_url)
 
@@ -45,7 +46,7 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
                 # print processing time
                 self._print_processing_time(start, end)
 
-        except Exception as err:
+        except KeyboardInterrupt as err:
             print("[ EXCEPTION ] Exception occured: {}".format(err))
 
             # save crawler status
@@ -69,7 +70,7 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
         status_dict["target_url"] = self.target_url
         status_dict["page_count"] = self.page_count
 
-        status_filename = self.scraper.__class__.__name__ + "-status.json"
+        status_filename = self.scraper_class.__name__ + "-status.json"
 
         with open(status_filename, "w") as wf:
             json.dump(status_dict, wf, indent=2)

@@ -3,9 +3,11 @@
 from my_collectors.abstract_scraper import AbstractScraper
 from urllib.request import urlopen, Request
 from urllib.parse import urljoin
+from urllib.error import HTTPError
 from http.client import IncompleteRead
 from bs4 import BeautifulSoup
 from readability.readability import Document
+import time
 import traceback
 
 
@@ -60,25 +62,30 @@ class ResearchBloggingScraper(AbstractScraper):
         print("[ GET ] Title: {}".format(title))
         article_dict["title"] = title
 
-        try:
-            request = Request(url, None, self.headers)
+        max_retries = 3
+        retries = 0
 
-            with urlopen(request) as res:
-                attempt = 0
-                while attempt < 3:
-                    try:
-                        html = res.read()
-                    except IncompleteRead as e:
-                        attempt += 1
-                    else:
-                        break
+        while True:
+            try:
+                request = Request(url, None, self.headers)
 
-            readable_article = Document(html).summary()
-            readable_soup = BeautifulSoup(readable_article, "lxml")
-            article_dict["article"] = readable_soup.get_text()
+                with urlopen(request) as res:
+                    html = res.read()
 
-        except Exception as err:
-            traceback.print_tb(err.__traceback__)
-            article_dict["article"] = None
+            except (HTTPError, IncompleteRead) as err:
+                retries += 1
+                if retries >= max_retries:
+                    raise err
+
+                wait = 2 ** (retries)
+                print("[ RETRY ] Waiting {} seconds...".format(wait))
+                time.sleep(wait)
+
+            else:
+                break
+
+        readable_article = Document(html).summary()
+        readable_soup = BeautifulSoup(readable_article, "lxml")
+        article_dict["article"] = readable_soup.get_text()
 
         return article_dict
