@@ -2,6 +2,7 @@
 
 import time
 import json
+import traceback
 
 from abc import ABCMeta, abstractmethod
 from my_collectors.base_collector import BaseCollector
@@ -47,7 +48,8 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
                 self._print_processing_time(start, end)
 
         except (Exception, KeyboardInterrupt) as err:
-            print("[ EXCEPTION ] Exception occured: {}".format(err))
+            print("[ EXCEPTION ] Exception occured in crawl(): {}".format(err))
+            traceback.print_tb(err.__traceback__)
 
             # save crawler status
             self.save_crawler_status()
