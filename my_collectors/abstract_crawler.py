@@ -52,7 +52,7 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
 
         except (Exception, KeyboardInterrupt) as err:
             print("[ EXCEPTION ] Exception occured in crawl(): {}".format(err))
-            # traceback.print_tb(err.__traceback__)
+            traceback.print_tb(err.__traceback__)
 
             # save crawler status
             self.save_crawler_status()
