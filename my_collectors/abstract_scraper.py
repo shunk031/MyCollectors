@@ -3,7 +3,7 @@
 import os
 import csv
 import traceback
-from urllib.error import HTTPError, URLErorr
+from urllib.error import HTTPError, URLError
 
 from abc import ABCMeta, abstractmethod
 from my_collectors.base_collector import BaseCollector
@@ -24,7 +24,7 @@ class AbstractScraper(BaseCollector, metaclass=ABCMeta):
             try:
                 article_dict = self.get_article_detail_info_dict(article_url)
                 article_detail_info.append(article_dict)
-            except (AttributeError, HTTPError, UnicodeEncodeError, URLErorr) as err:
+            except (AttributeError, HTTPError, UnicodeEncodeError, URLError) as err:
                 print("[ EXCEPTION ] Exception occured in scrap(): {}".format(err))
                 # traceback.print_tb(err.__traceback__)
 
