@@ -10,7 +10,7 @@ from my_collectors.base_collector import BaseCollector
 
 class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
 
-    FINISH_CRAWL = "Finish crawl."
+    FINISH_CRAWL = "FINISH CRAWL"
 
     def __init__(self, scraper_class, target_url, save_dir="./data", page_count=1):
 
@@ -47,14 +47,23 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
                 # print processing time
                 self._print_processing_time(start, end)
 
+            # finish message
+            finish_crawl = self.FINISH_CRAWL
+
         except (Exception, KeyboardInterrupt) as err:
             print("[ EXCEPTION ] Exception occured in crawl(): {}".format(err))
-            traceback.print_tb(err.__traceback__)
+            # traceback.print_tb(err.__traceback__)
 
             # save crawler status
             self.save_crawler_status()
 
-        return self.FINISH_CRAWL
+            if len(str(err)) == 0:
+                err = "Keyboard Interrupt"
+
+            # finish message
+            finish_crawl = "{} ({})".format(err, self.FINISH_CRAWL)
+
+        return finish_crawl
 
     def _print_processing_time(self, start_time, end_time):
 

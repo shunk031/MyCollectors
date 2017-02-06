@@ -32,6 +32,26 @@ target_urls = {
     "wired": "https://www.wired.com/category/science/page/1",
 }
 
+
+def safe_post_message(slacker, crawler, start_id, post_message):
+
+    max_retries = 3
+    retries = 0
+
+    while True:
+        try:
+            slacker.chat.post_message("#crawler", "[{}] [ID: {}] {}".format(crawler.__class__.__name__, start_id, post_message))
+        except HTTPError as http_err:
+            retries += 1
+            if retries >= max_retries:
+                raise Exception("Too many retries.")
+
+            wait = 2 ** (retries)
+            print("[ RETRY ] Waiting {} seconds...".format(wait))
+            time.sleep(wait)
+        else:
+            break
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Test crawler work")
@@ -71,21 +91,7 @@ if __name__ == '__main__':
     slacker = Slacker(slacker_config["token"])
 
     start_id = random.randint(0, 1000)
-    slacker.chat.post_message("#crawler", "{}: {} start.".format(crawler.__class__.__name__, start_id))
+    slacker.chat.post_message("#crawler", "[{}] [ID: {}] START.".format(crawler.__class__.__name__, start_id))
     finish_crawl = crawler.crawl()
 
-    max_retries = 3
-    retries = 0
-    while True:
-        try:
-            slacker.chat.post_message("#crawler", "{}: {}, {}".format(crawler.__class__.__name__, start_id, finish_crawl))
-        except HTTPError as http_err:
-            retries += 1
-            if retries >= max_retries:
-                raise Exception("Too many retries.")
-
-            wait = 2 ** (retries - 1)
-            print("[ RETRY ] Waiting {} seconds...".format(wait))
-            time.sleep(wait)
-        else:
-            break
+    safe_post_message(slacker, crawler, start_id, finish_crawl)
