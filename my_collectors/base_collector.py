@@ -22,7 +22,7 @@ class BaseCollector:
             try:
                 with urlopen(url) as res:
                     html = res.read()
-            except HTTPError as err:
+            except (HTTPError, ConnectionResetError) as err:
                 print("[ EXCEPTION ] in {}#make_soup: {}".format(self.__class__.__name__, err))
 
                 retries += 1
