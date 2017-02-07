@@ -11,24 +11,29 @@ class BaseCollector:
 
     def _make_soup(self, url):
 
-        max_retries = 3
+        html = self._safe_url_open(url)
+        return BeautifulSoup(html, "lxml")
+
+    def _safe_url_open(self, url, max_retries=3):
+
         retries = 0
 
         while True:
             try:
                 with urlopen(url) as res:
                     html = res.read()
-                return BeautifulSoup(html, "lxml")
-
             except HTTPError as err:
                 print("[ EXCEPTION ] in {}#make_soup: {}".format(self.__class__.__name__, err))
 
                 retries += 1
                 if retries >= max_retries:
-                    raise Exception("Too many retries.")
+                    print("[ EXCEPTION ] Too many retries.")
+                    raise err
 
-                wait = 2 ** (retries - 1)
+                wait = 2 ** retries
                 print("[ RETRY ] Waiting {} seconds...".format(wait))
                 time.sleep(wait)
             else:
                 break
+
+        return html
