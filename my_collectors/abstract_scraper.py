@@ -81,5 +81,6 @@ class AbstractScraper(BaseCollector, metaclass=ABCMeta):
         filename = filename.replace("?", "")
 
         if len(filename) > 250:
-            filename = filename[:250]
+            print("[ DEBUG ] File name is too long, so shorten.")
+            filename = filename[:200]
         return filename
