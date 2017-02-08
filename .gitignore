@@ -1,5 +1,6 @@
 # my collector gitignore
 
 *.csv
+*.tsv
 *.json
 __pycache__/
