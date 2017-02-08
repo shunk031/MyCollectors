@@ -11,9 +11,11 @@ csv.field_size_limit(1000000000)
 if __name__ == '__main__':
 
     TARGET_SITES = ["engadget", "researchblogging", "techcrunch", "wired"]
+    OUTPUT_TYPE = ["csv", "tsv"]
 
     parser = argparse.ArgumentParser(description="make single csv file from scraped data")
     parser.add_argument("site", choices=TARGET_SITES)
+    parser.add_argument("--output_type", "-o", choices=OUTPUT_TYPE, default="csv")
     args = parser.parse_args()
 
     target_dir = args.site + "_data"
@@ -33,10 +35,17 @@ if __name__ == '__main__':
     for i, scraped_data in tqdm(enumerate(scraped_data_list)):
         scraped_data_list[i][2] = scraped_data[2].replace("\n", " ")
 
-    output_file = "merged_" + args.site + "_data.csv"
+    if args.output_type == "csv":
+        ext = "csv"
+        delimiter = ","
+    else:
+        ext = "tsv"
+        delimiter = "\t"
+
+    output_file = "merged_" + args.site + "_data." + ext
     print("[ DUMP ] Dump scraped data to single csv file.")
     with open(output_file, "w") as wf:
-        writer = csv.writer(wf)
+        writer = csv.writer(wf, delimiter=delimiter)
 
         for scraped_data in tqdm(scraped_data_list):
             writer.writerow(scraped_data)
