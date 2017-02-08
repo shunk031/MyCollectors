@@ -26,7 +26,7 @@ class AbstractScraper(BaseCollector, metaclass=ABCMeta):
                 article_dict = self.get_article_detail_info_dict(article_url)
                 article_detail_info.append(article_dict)
             except (AttributeError, HTTPError, UnicodeEncodeError, UnicodeError,
-                    URLError, IncompleteRead, ConnectionResetError, LookupError) as err:
+                    URLError, IncompleteRead, ConnectionResetError, ValueError) as err:
                 print("[ EXCEPTION ] Exception occured in scrap(): {}".format(err))
                 # traceback.print_tb(err.__traceback__)
 
