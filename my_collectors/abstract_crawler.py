@@ -37,7 +37,7 @@ class AbstractCrawler(BaseCollector, metaclass=ABCMeta):
                 self.target_url = self.get_next_page_link(self.target_url)
 
                 # if target_url is not found
-                if self.target_url is None:
+                if (self.target_url is None) or (self.target_url == self.before_url):
                     break
 
                 self.page_count += 1
