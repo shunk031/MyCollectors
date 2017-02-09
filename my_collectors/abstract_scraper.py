@@ -59,6 +59,7 @@ class AbstractScraper(BaseCollector, metaclass=ABCMeta):
             article_title = article_detail_dict["title"]
             csv_filename = self._convert_filename(article_title)
             csv_filename = "{}.csv".format(csv_filename)
+            csv_file = os.path.join(self.save_dir, csv_filename)
 
             if "topics" in article_detail_dict.keys():
                 output_info = [article_detail_dict["title"],
@@ -70,9 +71,13 @@ class AbstractScraper(BaseCollector, metaclass=ABCMeta):
                                article_detail_dict["url"],
                                article_detail_dict["article"]]
 
-            with open(os.path.join(self.save_dir, csv_filename), "w") as wf:
-                writer = csv.writer(wf)
-                writer.writerow(output_info)
+            # if output file exists, then raise FileExistsError exception
+            if os.path.isfile(csv_file):
+                raise FileExistsError()
+            else:
+                with open(csv_file, "w") as wf:
+                    writer = csv.writer(wf)
+                    writer.writerow(output_info)
 
     def _convert_filename(self, article_title):
 
